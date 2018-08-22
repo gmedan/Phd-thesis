@@ -1,0 +1,64 @@
+\documentclass[a4paper,12pt,twoside]{report}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=3cm]{geometry}
+\usepackage[final]{pdfpages}
+
+\include{thesis.preamble}
+
+
+\begin{document}
+
+\title{\LARGE {\bf Title of my Ph.D. Thesis}\\
+ \vspace*{6mm}
+}
+
+\author{Guy Medan}
+\submitdate{November 2018}
+\supervisor{Prof. Leo Joskowicz}
+
+\normallinespacing
+\maketitle
+
+\preface
+\supervised
+\input{abstract/abstract}
+\input{contributions/contributions}
+%\input{dedication/dedication}
+%\input{quotes/quotes}
+
+\body
+\input{introduction/introduction}
+
+\pagestyle{plain}
+\cleardoublepage
+
+\addpdfchapter[Reduced-dose patient to baseline CT rigid registration in 3D Radon space]%
+{Published as: G. Medan, A. Kronman, L. Joskowicz. “Reduced-dose patient to baseline CT rigid registration in 3D Radon space”. Proc. 17th Int. Conf. Medical Image Computing and Computer-Assisted Intervention. Lecture Notes in Computer Science LNCS 8673-I, pp 291-298, 2014. }%
+{chapters/c127-2014-miccai-radon-registration.pdf}
+
+
+\addpdfchapter[Sparse 3D Radon Space Rigid Registration of CT Scans: Method and Validation Study]%
+{Published as: G. Medan, N. Shamul, L. Joskowicz. "Reduced-dose patient to baseline CT rigid registration in 3D Radon space". IEEE Trans. Med. Imaging 36, no. 2 (2017): 497-506.}%
+{chapters/Sparse_3D_Radon_Space_Rigid_Registration.pdf}
+
+
+\addpdfchapter[Reduced-dose imageless needle and patient tracking in interventional CT procedures]%
+{Published as: G. Medan, L. Joskowicz. "Reduced-Dose Imageless Needle and Patient Tracking in Interventional CT Procedures". IEEE transactions on medical imaging 36, no. 12 (2017): 2449-2456.}%
+{chapters/Reduced-dose_imageless_needle.pdf}
+
+
+\addpdfchapter[Placeholder for flexible needle]%
+{By Guy Medan and Leo Joskowicz (unpublished).}%
+{chapters/flexible.pdf}
+
+
+\input{conclusion/conclusion}
+
+%\appendix
+% appendices come here
+
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{ieeetr}
+\bibliography{thesis.bib}
+
+\end{document}
