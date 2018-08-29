@@ -2,6 +2,20 @@
 
 \begin{abstract}
 
-Text of the Abstract.
+Computed Tomography (CT) studies are commonplace in the clinic and play a central role in many aspects of patient care. The main disadvantage of CT scanning is that it exposes the patient to accumulating ionizing x-ray radiation that may increase the risk of cancer. Radiation exposure is further exacerbated in repeat CT scanning, in which a patient may undergo several scans in the space of diagnosis, treatment and follow up. Much research has been devoted to developing methods achieving a reduction of radiation dose, often focusing on image reconstruction and noise reduction. This work proposes to achieve x-ray dose reduction in repeat CT scanning by using information from a regular baseline scan, whereas in the repeat scan fractional scanning (also known as few-view or sparse-view CT scanning) can be used. Fractional scanning focuses on the selective acquisition of a fraction of scan angles by manipulating the x-ray source during gantry rotation so that the total dose of potentially harmful ionizing radiation absorbed by the patient is lowered significantly compared to a regular scan.
+
+This thesis presents a new method for rigid registration between a full baseline CT scan and a repeat scan acquired using fractional CT scanning, which enables a reduction of the x-ray dose to which the patient is subjected during the repeat scan.
+Additionally, new methods for image-less needle and patient tracking in interventional CT procedures are presented, relying on the registration produced by the first method to enabled reduced dose needle localization.
+
+Our rigid registration method accurately aligns the baseline and repeat scans in 3D Radon space by matching each direction vector in the sparse transform with the corresponding direction vector in the dense transform, where each direction corresponds to a one-dimensional signal representing the summation over parallel planes perpendicular to that direction. 
+Once directions are matched, the registration is computed by constructing and solving a system of linear equations.
+
+Our needle tracking methods locate the needle with respect to the patient in the CT scanner coordinate frame using fractional scanning and without reconstructing the CT image. 
+The key principle of our method is to use the strong X-ray signal of the needle in projection (sinogram) space and its thin cylinder geometry to determine its location. 
+Our methods work directly in 3D Radon space and simultaneously perform patient registration and needle localization in every sparse CT scanning acquisition. 
+They are designed to work for both rigid and flexible needles by tracing the 3D space trajectory of the needle from the 2D projection data acquired by the CT scanner.
+
+The methods have been quantitatively evaluated on singoram data from CT scans of abdomen and head phantoms.
+The results of the evaluation show that our methods provide accuracy comparable to image-space methods while using sparsely sampled Radon-space data without image reconstruction, enabling a substantial x-ray dose reduction in the repeat scan.
 
 \end{abstract}

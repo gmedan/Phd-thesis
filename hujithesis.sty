@@ -67,10 +67,6 @@
   \cleardoublepage
   \normalsize
 }
-\def\endsupervised{
-  \par
-  \cleardoublepage
-}
 
 \def\abstract{
   \begin{center}{
@@ -93,9 +89,6 @@
   \linespread{1.5}
   \normalsize
 }
-\def\endacknowledgements{
-  \par
-}
 
 \newenvironment{contributions}{
   \begin{center}{
@@ -105,12 +98,9 @@
   \linespread{1.5}
   \normalsize
 }
-\def\endcontributions{
-  \par
-}
 
 \def\preface{
-    \pagenumbering{roman}
+    \pagenumbering{arabic}
     \pagestyle{plain}
     \doublespacing
 }
@@ -119,6 +109,7 @@
 \def\body{
     \cleardoublepage    
     \pagestyle{uheadings}
+    \linespread{1.0}
     \tableofcontents
     \pagestyle{plain}
     \cleardoublepage
@@ -131,7 +122,6 @@
     \pagestyle{plain}
     \cleardoublepage
     \pagestyle{uheadings}
-    \pagenumbering{arabic}
     \doublespacing
 }
 

@@ -2,16 +2,28 @@
 
 \label{ch:conclusions}
 
-\section{Summary of Thesis Achievements}
+\section{Summary}
 
-Summary.
-
-
-\section{Applications}
-
-Applications.
-
+%The key novelty of our method is the %accurate location of a needle with %respect to a patient anatomy in the CT %scanner with sparse scan sampling and %without reconstructing the CT image. The %needle location is performed directly in %3D Radon space using the raw sparse %sinogram data produced by the CT scanner. %The sparse sampling is achieved by %fractional scanning. It is expected to %reduce by 2orders of magnitude the %radiation dose of a full CT scan without %additional hardware or setup. The method %supports frequent, accurate needle %tracking with respect to the patient. %Importantly, the needle can be rigid or %flexible and the patient does not require %immobolization. 
+%Advantages of the new method
+%The main advantages of our method are: %1.Accurate needle and needle tip %localization without image %reconstruction.
+%2.Significant dose reduction for each %individual snapshot: 
+%a.Much less radiation for the same amount %of needle locations.
+%b.Many more needle locations for the same %amount of radiation.
+%3.Simultaneous patient registration and %needle localization for every snapshot.
+%4.No in-plane needle location is %required. 
+%5.Fully automatic, no calibration and/or %manual setup.
+%6.No additional hardware/setup required %–with the exception of a simple marker %attached to the needle to determine its %tip location. 
+%7.Artifact-free monitoring of needle %location. 
+%8.Supports closed-loop robotic flexible %needle insertion. 
 
 \section{Future Work}
 
-Future Work. \cite{medan2017reduced}
+The methods described in this thesis take advantage of sparse sampling in the view-angle domain during the CT acquisition process. However, to achieve the potential of substantial dose reduction, the scanning protocol and hardware itself must be altered in ways that are beyond the scope of this thesis. For example, some variants of dual-energy CT scanners switch the tube voltage between higher voltage (140kV) to lower voltage (80kV) every 1$^\circ$ 
+\cite{goo2017dual}. By alternatively switching the voltage between high and low and with a wider angular spacing of 10$^\circ$-20$^\circ$, an x-ray dose reduction of $\times$10-50 can be achieved.
+
+A different application to the low-dose rigid registration algorithm presented in this thesis is investigated by Shamul et al. \cite{shamul2017radon}. The goal of this work is to combine the baseline scan data with fractional repeat scanning to reconstruct CT images of the patient such that they incorporate any changes in the anatomy that may have occurred since the baseline scan, while achieving an x-ray dose reduction compared to a full repeat scan. In this approach a map of changed regions is computed based on comparisons in Radon space (made possible thanks to Radon space rigid registration), and consequently sparse scanning is performed such that only rays passing through the changed regions are acquired, enabling the reduction of x-ray dose. Then, the repeat and baseline data is combined in Radon space so that an image reconstruction can be computed using well known reconstruction methods. It is noted that this approach extends the hardware requirements from a CT scanner to not only support fractional scanning of view angles, but also to dynamically adjust its collimator as the gantry rotates so that only beams of interest are scanned.
+
+Further work yet to be published by Adelman et al. extends rigid registration in Radon space to simultaneous deformable registration and image reconstruction based on a similar scheme of sparse view angles scanning and algebraic image reconstruction. This work has the potential to bring the promise of dose reduced applications to clinical procedures in which deformations cannot be neglected.
+
+We expect that our approach to x-ray dose reduction will have a significant impact on the ongoing effort to lower doses of ionizing radiation in radiology, as manufacturers adopt new technologies in CT scanners enabling the rise of novel algorithms promising the benefit of reduced radiation-related risk to patients.
