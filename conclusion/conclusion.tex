@@ -4,18 +4,24 @@
 
 \section{Summary}
 
-%The key novelty of our method is the %accurate location of a needle with %respect to a patient anatomy in the CT %scanner with sparse scan sampling and %without reconstructing the CT image. The %needle location is performed directly in %3D Radon space using the raw sparse %sinogram data produced by the CT scanner. %The sparse sampling is achieved by %fractional scanning. It is expected to %reduce by 2orders of magnitude the %radiation dose of a full CT scan without %additional hardware or setup. The method %supports frequent, accurate needle %tracking with respect to the patient. %Importantly, the needle can be rigid or %flexible and the patient does not require %immobolization. 
-%Advantages of the new method
-%The main advantages of our method are: %1.Accurate needle and needle tip %localization without image %reconstruction.
-%2.Significant dose reduction for each %individual snapshot: 
-%a.Much less radiation for the same amount %of needle locations.
-%b.Many more needle locations for the same %amount of radiation.
-%3.Simultaneous patient registration and %needle localization for every snapshot.
-%4.No in-plane needle location is %required. 
-%5.Fully automatic, no calibration and/or %manual setup.
-%6.No additional hardware/setup required %–with the exception of a simple marker %attached to the needle to determine its %tip location. 
-%7.Artifact-free monitoring of needle %location. 
-%8.Supports closed-loop robotic flexible %needle insertion. 
+The pervasiveness of CT studies in routine clinical use has focused much attention on methods to mitigate its most prominent drawback - the increased risk of cancer due to exposure to ionizing radiation. 
+Repeat CT scanning, while very common throughout the clinical work flow of diagnosis, treatment and follow-up, offers a relatively untapped opportunity for dose reduction by incorporating information from previous scans of the patient during acquisition of a repeat scan.
+This thesis presents methods for repeat CT scanning which rely on a novel approach to x-ray dose reduction: fractional scanning in the view-angle domain. With this approach the dose absorbed by the patient in the repeat scan could be reduced by at least an order of magnitude, by acquiring only a fraction of the projection data necessary for image reconstruction and using algorithms designed specifically for this domain.
+
+\textbf{The Radon-space rigid registration method} is the basis for any comparison between the baseline scan and fractional repeat scans.
+Our study on real sinogram data from phantom scans shows that it out-performs image space registration under sparse sampling conditions, and is able to recover larger transformations than image space registration .
+
+\textbf{The rigid needle localization method} builds upon the Radon space registration method and relies on a spherical marker attached to the needle at a known distance from the tip as a starting point for the localization. This is achieved using projection difference images, computed by comparing the baseline and repeat scans based on the rigid registration calculated by the first method. The needle trajectory is then traced in 3D space from the projection difference images. The trajectory can then be displayed as an augmentation of the baseline scan (see Fig \ref{fig:figures/needle+patient_tracking.png}). Our experimental results on five scans of an abdomen phantom show it is able to localize the needle tip with error of up to 2mm for out-of-plane insertions without reconstructing the repeat scan image.
+
+\textbf{The flexible needle localization method} extends the rigid needle localization method to flexible needles by establishing control points along the needle path to calculate a bezier curve representing the trajectory. Experiments on seven scans of an abdomen phantom and with two types of flexible needles show an average tip localization error of 2.4 mm.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=15cm]{figures/needle+patient_tracking.png}
+    \caption{\small{Illustration of image-less needle and patient tracking process in interventional radiology.}
+}
+    \label{fig:figures/needle+patient_tracking.png}
+\end{figure*}
 
 \section{Future Work}
 
