@@ -46,11 +46,35 @@ Such alterations to CT scanning firmware and/or hardware are necessary in order 
 
 \section{Previous work}
 
-% CT guided interventional radiology
+Medical image registration has been studied extensively, with several approaches emerging \cite{maintz1998survey}.
+\textbf{Feature-based} methods compute the rigid transformation by matching points defined in volumetric medical images, usually of fiducials or natural features, and minimizing the sum of their pairwise distances. Since these methods require the explicit identification and matching of points, their scope is limited to selected clinical scenarios. 
+\textbf{Intensity-based} methods perform the registration by comparing the intensity values of both images, a technique which has become dominant in image registration over the past decades \cite{viergever2016survey}. To yield adequate results, they require both volumetric images to be of good quality, be free of image reconstruction artifacts, and have small scanned subject/pose discrepancies.
 
+Specific to the domain of medical images based on radiography (x-ray and CT imaging), \textbf{intensity-based 2D x-ray to 3D CT} registration methods have been developed. Some are in routine clinical use for image-guided therapy and for patient positioning during treatment (see \cite{markelj2012review} for a comprehensive survey). In all cases, the matching procedure requires at least two (and often more) x-ray images of sufficient quality for the matching. The drawbacks of these methods are that they may use different hardware for CT and x-ray acquisition, and that they require set-up time.
 
-% rigid registration is the basis for comparison
+\textbf{Radon-space methods}, also called sinogram or projection-space methods, use the CT scans Radon transform representation (sinograms) for the registration. They are not subject to image reconstruction artifacts and have the potential to yield robust and accurate results with greatly reduced doses.
+Freiman et al. \cite{freiman2011spectral} describe a 2D/3D registration method for x-ray to CT scans that uses invariant Fourier space features to find the transformation parameters by out-of-plane coarse registration followed by in-plane fine registration. 
+Mao et al. \cite{mao2007ct} describe a slice-by-slice registration method in 2D Radon space and its extension to 3D for small angles.
+Mooser et al. \cite{mooser2013estimation} propose an iterative optimization method to compute the registration parameters in 3D Radon space for full scans. 
+You et al. \cite{you1998image} investigate the invariant properties of rigid movement in image and Radon space. 
+Based on this work, Lu, Fitchard et al. \cite{lu1999image, fitchard1998registration, fitchard1999six} use Fourier phase matching to iteratively compute the rigid registration parameters by decomposing the 3D problem into a series of 2D in-plane registrations. The method is limited to small transformations. 
 
+More recently, Wein et al. \cite{wein2011detecting}, Aichert et al. \cite{aichert2014redundancies,aichert2015epipolar}, and Debbler et al \cite{debbeler2013new} use directed epipolar geometry to establish consistency metrics between different projection views for the detection of mid-scan patient motion. However, inter-scan registration is not addressed. 
+The 2D Radon transform was shown to be very useful for pattern matching and registration of 2D images, both in terms of accuracy, convergence range and noise robustness \cite{nacereddine2015similarity, wan2010fast}. However, the authors do not indicate how their methods can be extended to 3D and to real sinogram data. 
+
+Deformable registration methods in projection space are also addressed. 
+Osorio et al. \cite{osorio2007non} describe a Fourier space based on full CT scans.
+Zhang et al. \cite{zhang2014few} present a method that iteratively matches the repeat scan projection to the re-projected deformed baseline. The method requires a preceding rigid registration step to allow convergence of the deformation field to the optimal solution.  
+Large reductions in radiation dose have been shown for 3D/2D registration between CT and C-arm fluoroscopy \cite{uneri2014evaluation}.
+
+Chapters \ref{chapters/Reduced-dose_imageless_needle.pdf}-\ref{chapters/Flexible_needle.pdf} focus on clinical applications built on the ability to register a sparse repeat scan to a baseline, namely -- rigid and flexible needle localization. Localization of surgical instruments in CT imaging, and needles in particular, has been addressed in a variety of ways. The needle is usually localized in image space, and so is often required to be inserted in the axial imaging plane (in-plane insertion), which forces the radiologist to adjust the gantry angle repeatedly and re-scan until a suitable orientation is found \cite{walsh2011smaller}. Steering the needle inside the tissue toward the target can be achieved manually by the radiologist under passive guidance, or by robotic steering in closed loop with the imaging. A commercial CT navigation device, SimpliCT by NeoRad \cite{simpliCT}, implements laser steering to guide the radiologist during manual insertion by aligning the needle with the laser direction. In \cite{schubert2013ct}, an optical tracking system uses surface markers to allow feedback of the needle orientation during the intervention. Another approach is to optically over-lay the CT image on top of the patient using a semi-transparent mirror, thereby providing the physician with visual guidance during manual needle insertion \cite{fichtinger2005image}.
+
+Several works describe specific methods to localize the needle shape in reconstructed CT images, relying on acquisition of full repeat scan and reconstruction of the image for each localization of the needle.
+Hou et al. \cite{huo2015shape} reconstruct the bevel-tip flexible needle trajectory from full CT slices by localizing points at which the needle intersects slice planes, and fitting a four-order polynomial to the collection of 3D points.
+Yaniv et al. \cite{yaniv2010needle} describe a system in which embedded electromagnetic fiducials are used for needle tracking under CT guidance, with operator input required to identify the needle tip in a full CT scan taken in-situ.
+
+The needle shape can be used for control loop feedback in image guided actuated intervention systems.
+Ben-David et al. \cite{ben2018evaluation} describe a robotic system for flexible needle insertion under CT guidance. A dual guiding mechanism is composed of a driver which advances the needle while a positioning unit steers it during insertion. A pre-planned 3D trajectory is executed and amended during the insertion based on full repeated CT scans. Earlier work by Glozman et al. \cite{glozman2007image} describes robotic flexible needle steering and a needle-tissue mechanical interaction model, where feedback is based on 2D in-plane imaging of the needle.
 
 \section{Research goals}
 
@@ -70,7 +94,7 @@ This thesis presents a novel rigid registration method for repeat CT scanning, a
 It is presented in two parts: the first is a method overview for parallel rays geometry with preliminary results using simulated sinogram data obtained from reconstructed CT images. The second part is a theoretical extension to fan- and cone-beam geometries, along with an extensive validation study on parallel rays sinogram data obtained in collaboration with a CT manufacturer - GE Healthcare Haifa.
  
 The main advantages of this method are: 
-1) out-performs image space registration under sparse sampling  conditions;
+1) out-performs image space registration under sparse sampling conditions;
 2) supports much larger transformations than image space registration; 
 3) allows for a theoretical dose reduction beyond $\times$100 by combining low tube current scanning and fractional scanning.
 
