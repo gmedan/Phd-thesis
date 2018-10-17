@@ -1,5 +1,7 @@
 \chapter{Introduction}
 
+This chapter consists of three sections. The first section covers the background of clinical CT imaging and the motivation for reducing the X-ray dose to which patients undergoing CT scans are exposed. The second section provides a review of the mathematical concepts used to model the acquisition process of CT imaging, which are the basis for the development of the methods described in this thesis. Lastly, a review of previous work is presented, covering research related to registration of medical images, and works on the subject of CT guided needle interventions.
+
 \section{Background}
 
 % CT studies are pervasive
@@ -8,27 +10,29 @@ In the USA alone, it is estimated that 10\% of the population has had a CT scan,
 Radiologists and physicians rely on these images for diagnosis, treatment planning and execution, and follow-up evaluation of a wide range of medical conditions.
 
 % How CT is acquired
-During CT acquisition, a gantry consisting of an x-ray tube and an array of detectors is rotated around the patient so that multiple projectional radiography images are collected from many angles (see Fig. \ref{fig:figures/CT_machine.png}).
-An algorithm reconstructs a volumetric image from these two dimensional images, wherein each voxel is assigned a value measured in Hounsfield Units (HU) which is closely linked to the linear attenuation coefficient, a physical quantity measuring the absorption of x-rays in the tissue.
+During CT acquisition, a gantry consisting of an X-ray tube and an array of detectors is rotated around the patient so that multiple projectional radiography images are collected from many angles (see Fig. \ref{fig:figures/CT_machine}).
+An algorithm reconstructs a volumetric image from these two dimensional images, wherein each voxel is assigned a value measured in Hounsfield Units (HU) which is closely linked to the linear attenuation coefficient, a physical quantity measuring the absorption of X-rays in the tissue.
 The different characteristics of radiation absorption between different types of tissue, along with the ability to inject a contrast agent into the bloodstream, allow CT scans to offer a fast and cost effective method of producing high contrast images of anatomical structures (see Fig. \ref{fig:figures/Brain_CT.png}) while eliminating overlapping structures that are outside the region of interest, giving it clear advantages over traditional 2D radiography.
 For these reasons it has become widely used in diagnosis of conditions such as severe trauma, tumors in the abdomen and pelvis, and vascular diseases; in guidance of interventional procedures such as biopsies, aspirations and minimally invasive tumor treatment; and in follow-up assessment of surgical, chemotherapy or other treatments by comparison to pre-treatment scans.
 
 \begin{figure*}[t]
-    \centering
-    \includegraphics[width=15cm]{figures/CT_machine.png}
-    \caption{\small{Left: Computed Tomography (CT) scanner. Right: CT scanner with front cover removed, exposing the x-ray source and detector array on a rotating gantry}}
-    \label{fig:figures/CT_machine.png}
+  \centering
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/ct_machine_a.png}}
+  \hfill
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/ct_machine_b.png}}
+  \caption{\small{Computed Tomography (CT) scanner (a) and CT scanner with front cover removed (b), exposing the X-ray source and detector array on a rotating gantry.}}
+    \label{fig:figures/CT_machine}
 \end{figure*}
 
 % harmful radiation
-The main disadvantage of CT imaging is that it exposes the patient to a substantial amount of ionizing radiation from x-rays. The radiation dose of a CT scan is the total energy of the x-rays cast onto the patient with sufficient energy to penetrate the structures of the body. The absorbed dose is the energy imparted by ionizing radiation per unit mass of irradiated material. The dose equivalent radiation is a surrogate measure that estimates the hazard to body tissues caused by radiation \cite{mettler2000ct, goo2017dual}. It is cumulative and is quantified in Sievert (Sv) and rem units.
+The main disadvantage of CT imaging is that it exposes the patient to a substantial amount of ionizing radiation from X-rays. The radiation dose of a CT scan is the total energy of the X-rays cast onto the patient with sufficient energy to penetrate the structures of the body. The absorbed dose is the energy imparted by ionizing radiation per unit mass of irradiated material. The dose equivalent radiation is a surrogate measure that estimates the hazard to body tissues caused by radiation \cite{mettler2000ct, goo2017dual}. It is cumulative and is quantified in Sievert (Sv) and rem units.
 It is now believed that ionizing radiation above a certain threshold may be harmful to the patient \cite{hall2008cancer, davies2011risks, kalra2004strategies}. Studies show that radiation is related to carcinogenesis, which occurs at low doses (\textless 100 mSv) in diagnostic imaging and accounts for an estimated 0.5--0.9\% of cancers. CT-based exams contribute disproportionately to the collective radiation dose of the population. Today, 11\% of diagnostic radiological procedures in the USA are CT examinations. However, their contribution to the collective dose from diagnostic radiology is estimated at 67\% \cite{mettler2000ct}.
 
 The reduction of radiation dose of individual CT scans has become a central clinical and technical issue. In CT imaging, the basic trade-off is between radiation dose and image quality. Lower doses, achieved by fewer X-rays with lower energies, produce imaging artifacts and increased noise, thereby reducing the image quality and limiting its clinical usefulness. Consequently, the clinical indication for CT scan dose determination is the FDA-approved ALARA \textbf{--} As Low As Reasonably Achievable \cite{newman2011alara}. In parallel, many scanning protocols, image reconstruction methods, and clinical evaluation studies have been developed and performed for dose reduction of individual CT scans \cite{shtok2013learned, moore2009adaptive}.
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=15cm]{figures/Brain_CT.png}
+    \includegraphics[width=\textwidth]{figures/Brain_CT.png}
     \caption{\small{Axial slices from a CT scan of the brain.}}
     \label{fig:figures/Brain_CT.png}
 \end{figure*}
@@ -38,22 +42,80 @@ Repeat CT scanning, in which a patient is scanned some time after a baseline sca
 This thesis aims to take advantage of the significant, untapped opportunities for dose reduction in repeat CT scanning by incorporating data from the baseline scan in the acquisition and analysis of the repeat scan. The potential is shown, for example, in multi-phase and follow-up studies, where reports indicate that many patients that undergo abdominal and pelvic CT scanning have more that one scan on the same day; that 30\% of them have at least three scans in the course of their treatment \cite{davies2011risks}; and that many receive substantial excess radiation dose with no clinical benefit \cite{mettler2000ct}. Dose reduction is of particular importance in pediatric radiology \cite{donnelly2005reducing, chodick2007excess}.
 
 % fractional scanning
-The mechanism by which dose reduction is to be achieved is termed \textit{fractional scanning} in this thesis. 
-It is based on the proposition of sparse sampling of the projections in the view-angle domain, i.e. acquiring only a small fraction of the view angles typically acquired in a regular scan.
-This scheme would enable reducing the absorbed radiation dose by modulating the x-ray source during gantry rotation, either via current/voltage modulation or fast mechanical collimation.
+The approach by which dose reduction is to be achieved is termed \textit{fractional scanning} in this thesis. 
+It is based on sparse sampling of the projections in the view-angle domain, i.e. acquiring only a small fraction of the view angles typically acquired in a regular scan.
+This enables reducing the absorbed radiation dose by modulating the X-ray source during gantry rotation, either via current/voltage modulation or fast mechanical collimation.
 Fractional scanning is realized in existing CT scanners by tube potential switching and tube current modulation \cite{kalra2004techniques}, and active collimation has been used in radiotherapy \cite{mackie2006history}.
 Such alterations to CT scanning firmware and/or hardware are necessary in order to realize the potential of dose reduction using methods presented in this thesis; however, the topic of CT scanner design and control is beyond the scope of this work, which focuses on the algorithmic aspects of leveraging sparse repeat scan data to achieve dose-reduced clinical applications.
 
+\section{The Radon transform}
+
+The integral transform which came to be known as the Radon transform was first described by Johan Radon in 1917 \cite{radon1917determination} and found no practical use until the introduction of the first CT system by Sir Godfrey Newbold Hounsfield and Allan McLeod Cormack in 1971 \cite{maier2018medical}. It is formulated as line integrals parameterized using polar coordinates over the domain of a two-dimensional integrable function $f: \rm I\!R ^2 \rightarrow \rm I\!R $ (see Fig. \ref{fig:figures/radon_a}):
+\begin{equation}
+\mathcal{R} f(r, \alpha) 
+= \int \displaylimits_{(x,y) \in l} f(x,y)\, dl \\
+= \int \displaylimits_{(x,y) \in \rm I\!R ^2} { f(x,y)\, \delta(x \cos \alpha + y \sin \alpha - r)}\, dx\, dy
+\end{equation}
+The resulting two-dimensional function $\mathcal{R} f(r, \alpha)$ is known as the sinogram of $f$, as depicted in Fig. \ref{fig:fractional_a}. Each column of the sinogram is the one-dimensional signal obtained by summation along parallel lines in a specific direction.
+
+The Radon transform is well suited for describing the image formation process underlying CT imaging, which is modeled as an exponential decrease in X-ray intensity as a ray progresses through the object, known as the Beer-Lambert law:
+\begin{equation}
+I(x) = I_0 \, \exp \left( -\mu \, x \right)
+\label{eq:beerlamb}
+\end{equation}
+where $I_0$ is the initial intensity, $\mu$ is the attenuation coefficient and $I(x)$ represents the intensity after the ray is attenuated through distance $x$. Allowing for non-constant, integrable attenuation $\mu(x,y)$, Eq. \ref{eq:beerlamb} for a ray $l$ spanning between the X-ray source and a detector element becomes
+\begin{equation}
+I_l = I_0 \, \exp \left( - \int \displaylimits_{(x,y) \in l} \mu(x,y)\, dl \right)
+\label{beerlamb}
+\end{equation}
+ or simply $\mathcal{R} \mu (l) = \log \frac{I_0}{I_l} $. Therefore, post-processing the raw data acquired by a CT scanner, using the photon count at the detector and the known photon count emitted by the source, gives the Radon transform of an axial slice taken from the attenuation function the scanned object. Modern CT scanners are able to acquire many sinogram slices simultaneously. 
+ The concept of fractional scanning previously mentioned is realized by sparsely sampling the sinogram slices in the view-angle axis (see Fig. \ref{fig:fractional_b}). 
+ %f the repeat scan sinogram data is acquired using this pattern by modulating the X-ray source during its rotation, the reduction of ionizing radiation to which a patient is exposed would be significant - by an order of magnitude or more, depending on the sparsity of sampling and speed of modulation.
+ 
+ The inversion of the Radon transform for image reconstruction can be achieved using different methods, most notably the Filtered Back-Projection algorithm which relies on a theorem relating the Radon and Fourier transforms (Fourier Slice Theorem).
+ 
+\begin{figure*}[t]
+  \centering
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/radon_a.png}
+  \label{fig:figures/radon_a}}
+  \hfill
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/radon_b.png}
+  \label{fig:figures/radon_b}}
+  \caption{\small{Illustration of the Radon transform for a single direction: (a) The two-dimensional Radon transform of a planar image is achieved by summation along parallel lines perpendicular to an axis $r$ at an angle $\alpha$ relative to the positive $x$ direction, producing a one-dimensional signal. (b) The three-dimensional Radon transform of a volumetric image involves summation along parallel planes having normal vector $\hat{n}$, producing a one-dimensional signal as well.}}
+    \label{fig:figures/radon}
+\end{figure*}
+
+
+ The two-dimensional Radon transform is extended to three dimensions as follows. The Radon transform of an integrable function $f: \rm I\!R ^3 \rightarrow \rm I\!R $ involves integration along parallel planes (see Fig. \ref{fig:figures/radon_b}):
+ \begin{equation}
+    \mathcal{R}^{3D} f(s, \hat{n}) 
+    = \int \displaylimits_{\textbf{r}\, \in H(\hat{n}, s)} f(\textbf{r})\, dA
+ \end{equation}
+ where $H(\hat{n}, s) = \{ \textbf{r} \in \rm I\!R ^3 : \textbf{r} \cdot \hat{n} = s\}$ and integration is performed within each plane $H(\hat{n}, s)$. For a constant projection direction $\hat{n}$, $\mathcal{R}^{3D} f(s, \hat{n})$ is a one-dimensional signal in $s$, similarly to the two-dimensional Radon transform. As noted by \cite{mooser2013estimation}, the values of $\mathcal{R}^{3D} f(s, \hat{n})$ can be calculated directly from slice sinograms stack of a volume without the need to reconstruct the volume image and carry out planar integration. This is achieved by performing two-dimensional Radon transforms on slices from the $r-z$ plane of the sinograms stack. This relation allows calculating the three-dimensional Radon transform of a fractionally scanned volume without first going through volume reconstruction - which would have been impossible due to the sparsity of the data collected.
+
+\begin{figure*}[t]
+  \centering
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/fractional_a.png}
+  \label{fig:fractional_a}}
+  \hfill
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/fractional_b.png}
+  \label{fig:fractional_b}}
+  \caption{\small{Radon transforms of two dimensional images (sinograms), representing slices of a volume along the z direction. (a) Full sinograms, densely sampled in the view angle direction. (b) Blue lines on the sinograms highlighting the regions acquired during sparse view angle sampling in fractional scanning.}}
+    \label{fig:figures/fractional}
+\end{figure*}
+
 \section{Previous work}
+
+The literature reviewed in this section TODO
 
 Medical image registration has been studied extensively, with several approaches emerging \cite{maintz1998survey}.
 \textbf{Feature-based} methods compute the rigid transformation by matching points defined in volumetric medical images, usually of fiducials or natural features, and minimizing the sum of their pairwise distances. Since these methods require the explicit identification and matching of points, their scope is limited to selected clinical scenarios. 
 \textbf{Intensity-based} methods perform the registration by comparing the intensity values of both images, a technique which has become dominant in image registration over the past decades \cite{viergever2016survey}. To yield adequate results, they require both volumetric images to be of good quality, be free of image reconstruction artifacts, and have small scanned subject/pose discrepancies.
 
-Specific to the domain of medical images based on radiography (x-ray and CT imaging), \textbf{intensity-based 2D x-ray to 3D CT} registration methods have been developed. Some are in routine clinical use for image-guided therapy and for patient positioning during treatment (see \cite{markelj2012review} for a comprehensive survey). In all cases, the matching procedure requires at least two (and often more) x-ray images of sufficient quality for the matching. The drawbacks of these methods are that they may use different hardware for CT and x-ray acquisition, and that they require set-up time.
+Specific to the domain of medical images based on radiography (X-ray and CT imaging), \textbf{intensity-based 2D X-ray to 3D CT} registration methods have been developed. Some are in routine clinical use for image-guided therapy and for patient positioning during treatment (see \cite{markelj2012review} for a comprehensive survey). In all cases, the matching procedure requires at least two (and often more) X-ray images of sufficient quality for the matching. The drawbacks of these methods are that they may use different hardware for CT and X-ray acquisition, and that they require set-up time.
 
 \textbf{Radon-space methods}, also called sinogram or projection-space methods, use the CT scans Radon transform representation (sinograms) for the registration. They are not subject to image reconstruction artifacts and have the potential to yield robust and accurate results with greatly reduced doses.
-Freiman et al. \cite{freiman2011spectral} describe a 2D/3D registration method for x-ray to CT scans that uses invariant Fourier space features to find the transformation parameters by out-of-plane coarse registration followed by in-plane fine registration. 
+Freiman et al. \cite{freiman2011spectral} describe a 2D/3D registration method for X-ray to CT scans that uses invariant Fourier space features to find the transformation parameters by out-of-plane coarse registration followed by in-plane fine registration. 
 Mao et al. \cite{mao2007ct} describe a slice-by-slice registration method in 2D Radon space and its extension to 3D for small angles.
 Mooser et al. \cite{mooser2013estimation} propose an iterative optimization method to compute the registration parameters in 3D Radon space for full scans. 
 You et al. \cite{you1998image} investigate the invariant properties of rigid movement in image and Radon space. 
@@ -67,7 +129,7 @@ Osorio et al. \cite{osorio2007non} describe a Fourier space based on full CT sca
 Zhang et al. \cite{zhang2014few} present a method that iteratively matches the repeat scan projection to the re-projected deformed baseline. The method requires a preceding rigid registration step to allow convergence of the deformation field to the optimal solution.  
 Large reductions in radiation dose have been shown for 3D/2D registration between CT and C-arm fluoroscopy \cite{uneri2014evaluation}.
 
-Chapters \ref{chapters/Reduced-dose_imageless_needle.pdf}-\ref{chapters/Flexible_needle.pdf} focus on clinical applications built on the ability to register a sparse repeat scan to a baseline, namely -- rigid and flexible needle localization. Localization of surgical instruments in CT imaging, and needles in particular, has been addressed in a variety of ways. The needle is usually localized in image space, and so is often required to be inserted in the axial imaging plane (in-plane insertion), which forces the radiologist to adjust the gantry angle repeatedly and re-scan until a suitable orientation is found \cite{walsh2011smaller}. Steering the needle inside the tissue toward the target can be achieved manually by the radiologist under passive guidance, or by robotic steering in closed loop with the imaging. A commercial CT navigation device, SimpliCT by NeoRad \cite{simpliCT}, implements laser steering to guide the radiologist during manual insertion by aligning the needle with the laser direction. In \cite{schubert2013ct}, an optical tracking system uses surface markers to allow feedback of the needle orientation during the intervention. Another approach is to optically over-lay the CT image on top of the patient using a semi-transparent mirror, thereby providing the physician with visual guidance during manual needle insertion \cite{fichtinger2005image}.
+Clinical applications enabled by the ability to register a sparse repeat scan to a baseline CT scan are present in this thesis, namely -- rigid and flexible needle localization. Localization of surgical instruments in CT imaging, and needles in particular, has been addressed in a variety of ways. The needle is usually localized in image space, and so is often required to be inserted in the axial imaging plane (in-plane insertion), which forces the radiologist to adjust the setup repeatedly and re-scan until a suitable orientation is found \cite{walsh2011smaller}. Steering the needle inside the tissue toward the target can be achieved manually by the radiologist under passive guidance, or by robotic steering in closed loop with the imaging. A commercial CT navigation device, SimpliCT by NeoRad \cite{simpliCT}, implements laser steering to guide the radiologist during manual insertion by aligning the needle with the laser direction. In \cite{schubert2013ct}, an optical tracking system uses surface markers to allow feedback of the needle orientation during the intervention. Another approach is to optically over-lay the CT image on top of the patient using a semi-transparent mirror, thereby providing the physician with visual guidance during manual needle insertion \cite{fichtinger2005image}.
 
 Several works describe specific methods to localize the needle shape in reconstructed CT images, relying on acquisition of full repeat scan and reconstruction of the image for each localization of the needle.
 Hou et al. \cite{huo2015shape} reconstruct the bevel-tip flexible needle trajectory from full CT slices by localizing points at which the needle intersects slice planes, and fitting a four-order polynomial to the collection of 3D points.
@@ -78,11 +140,11 @@ Ben-David et al. \cite{ben2018evaluation} describe a robotic system for flexible
 
 \section{Research goals}
 
-\textbf{The first goal of this thesis is to develop and validate an algorithm for rigid registration in repeat CT scanning procedures based on Radon-space methods achieving an x-ray dose reduction.}
+\textbf{The first goal of this thesis is to develop and validate an algorithm for rigid registration in repeat CT scanning procedures based on Radon-space methods achieving an X-ray dose reduction.}
 
 The focus of this thesis is to develop methods taking advantage of the information in the baseline scans to reduce the radiation dose required in the follow-up scan. Rigid registration is a cornerstone of computational radiology, and in the case of repeat CT scanning, is an essential preliminary stage in incorporating the information from the baseline and repeat scans in order to produce any clinical value.
 
-\textbf{The second goal is to develop and validate clinical applications leveraging the above registration algorithm, namely: image-less needle tracking methods to allow patient tracking and needle localization intra-operatively.}
+\textbf{The second goal is to develop intra-operative needle tracking methods to allow patient tracking and needle localization.}
 
 The needle tracking solution for interventional radiology realizes the potential of Radon-space rigid registration for dose reduction in a clinical context.
 
@@ -90,10 +152,10 @@ The needle tracking solution for interventional radiology realizes the potential
 
 This thesis presents a novel rigid registration method for repeat CT scanning, and a novel application enabled by it in CT guided interventions.
 
-\textbf{The Radon-space rigid registration method} calculates the 6 degrees-of-freedom rigid registration between a baseline scan and a repeat scan without repeat scan image reconstruction and using fractional scanning, which reduces the x-ray dose to which the patient is exposed during the repeat scan.
+\textbf{The Radon-space rigid registration method} computes the 6 degrees-of-freedom rigid registration between a baseline scan and a repeat scan without repeat scan image reconstruction and using fractional scanning, which reduces the X-ray dose to which the patient is exposed during the repeat scan.
 It is presented in two parts: the first is a method overview for parallel rays geometry with preliminary results using simulated sinogram data obtained from reconstructed CT images. The second part is a theoretical extension to fan- and cone-beam geometries, along with an extensive validation study on parallel rays sinogram data obtained in collaboration with a CT manufacturer - GE Healthcare Haifa.
  
-The main advantages of this method are: 
+The main advantages of this method are that it: 
 1) out-performs image space registration under sparse sampling conditions;
 2) supports much larger transformations than image space registration; 
 3) allows for a theoretical dose reduction beyond $\times$100 by combining low tube current scanning and fractional scanning.
@@ -101,7 +163,7 @@ The main advantages of this method are:
 \textbf{The rigid needle localization method} builds upon the rigid registration method.
 It relies on a spherical marker attached to the needle at a known distance from the tip. The marker is detected in projection difference images, which are generated using the rigid registration obtained using the previous method, and localized in 3D space. Then, the rigid needle direction in 3D space is computed as an intersection of planes associated with the needle projections in the projection difference images.
 
-The main advantages of this method are: 1) it enables existing clinical procedures in interventional radiology to benefit from the potential of x-ray dose reduction; and 2) it accurately localizes the needle with respect to an artifact free baseline scan, without reconstructing the repeat scan image prone to metallic artifacts due to the needle.
+The main advantages of this method are: 1) it enables existing clinical procedures in interventional radiology to benefit from the potential of X-ray dose reduction; and 2) it accurately localizes the needle with respect to an artifact free baseline scan, without reconstructing the repeat scan image prone to metallic artifacts due to the needle.
 
 \textbf{The flexible needle localization method} extends the rigid needle localization method to expand the range of applicable procedures to those requiring a flexible needle, such as obtaining biopsies of deeply situated targets where sensitive tissue structures must be avoided.
 It divides the needle trajectory into short segments and incrementally traces control points along it to generate a curve in 3D space following the needle path.
@@ -114,16 +176,16 @@ The main advantage of this method is expanding the applicable procedures of need
 The rest of this thesis consists of four articles describing the methods listed in the previous section, a discussion, and a list of references. It is organized as follows: 
 
 \textbf{Chapter \ref{chapters/c127-2014-miccai-radon-registration.pdf}}: Reduced-dose patient to baseline CT rigid registration in 3D Radon space.
-G. Medan, A. Kronman, L. Joskowicz. International Conference on Medical Image Computing and Computer-Assisted Intervention, p 291-298, 2014.
+G. Medan, A. Kronman, L. Joskowicz. \textit{International Conference on Medical Image Computing and Computer-Assisted Intervention, p 291-298, 2014.}
 
-\textbf{Chapter \ref{chapters/Sparse_3D_Radon_Space_Rigid_Registration.pdf}}: Sparse 3D Radon Space Rigid Registration of CT Scans: Method and Validation Study.
-G. Medan, N. Shamul, L. Joskowicz. IEEE Trans. Med. Imaging 36, no. 2 (2017): 497-506.
+\textbf{Chapter \ref{chapters/Sparse_3D_Radon_Space_Rigid_Registration.pdf}}: Sparse 3D Radon space rigid registration of CT scans: Method and Validation Study.
+G. Medan, N. Shamul, L. Joskowicz. \textit{IEEE Trans. Med. Imaging 36, no. 2 (2017): 497-506.}
 
-\textbf{Chapter \ref{chapters/Reduced-dose_imageless_needle.pdf}}: Reduced-Dose Imageless Needle and Patient Tracking in Interventional CT Procedures.
-G. Medan, L. Joskowicz. IEEE Trans. Med. Imaging 36, no. 12 (2017): 2449-2456.
+\textbf{Chapter \ref{chapters/Reduced-dose_imageless_needle.pdf}}: Reduced-Dose imageless needle and patient tracking in interventional CT procedures.
+G. Medan, L. Joskowicz. \textit{IEEE Trans. Med. Imaging 36, no. 12 (2017): 2449-2456.}
 
-\textbf{Chapter \ref{chapters/Flexible_needle.pdf}}: Flexible needle and patient tracking using fractional scanning for reduced dose in interventional CT procedures. Guy Medan and Leo Joskowicz (submitted to IEEE Trans. Med. Imaging). %TODO
+\textbf{Chapter \ref{chapters/Flexible_needle.pdf}}: Flexible needle and patient tracking using fractional scanning for reduced dose in interventional CT procedures. \textit{Guy Medan and Leo Joskowicz.}
 
-\textbf{Chapter \ref{ch:conclusions}}: Discussion and Conclusions
+\textbf{Chapter \ref{ch:conclusions}}: Conclusions
 
 \textbf{References}
