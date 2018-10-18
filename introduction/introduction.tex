@@ -56,7 +56,7 @@ The integral transform which came to be known as the Radon transform was first d
 = \int \displaylimits_{(x,y) \in l} f(x,y)\, dl \\
 = \int \displaylimits_{(x,y) \in \rm I\!R ^2} { f(x,y)\, \delta(x \cos \alpha + y \sin \alpha - r)}\, dx\, dy
 \end{equation}
-The resulting two-dimensional function $\mathcal{R} f(r, \alpha)$ is known as the sinogram of $f$, as depicted in Fig. \ref{fig:fractional_a}. Each column of the sinogram is the one-dimensional signal obtained by summation along parallel lines in a specific direction.
+The resulting two-dimensional function $\mathcal{R} f(r, \alpha)$ is known as the sinogram of $f$, as depicted in Fig. \ref{fig:figures/fractional_a}. Each column of the sinogram is the one-dimensional signal obtained by summation along parallel lines in a specific direction.
 
 The Radon transform is well suited for describing the image formation process underlying CT imaging, which is modeled as an exponential decrease in X-ray intensity as a ray progresses through the object, known as the Beer-Lambert law:
 \begin{equation}
@@ -69,7 +69,7 @@ I_l = I_0 \, \exp \left( - \int \displaylimits_{(x,y) \in l} \mu(x,y)\, dl \righ
 \label{beerlamb}
 \end{equation}
  or simply $\mathcal{R} \mu (l) = \log \frac{I_0}{I_l} $. Therefore, post-processing the raw data acquired by a CT scanner, using the photon count at the detector and the known photon count emitted by the source, gives the Radon transform of an axial slice taken from the attenuation function the scanned object. Modern CT scanners are able to acquire many sinogram slices simultaneously. 
- The concept of fractional scanning previously mentioned is realized by sparsely sampling the sinogram slices in the view-angle axis (see Fig. \ref{fig:fractional_b}). 
+ The concept of fractional scanning previously mentioned is realized by sparsely sampling the sinogram slices in the view-angle axis (see Fig. \ref{fig:figures/fractional_b}). 
  %f the repeat scan sinogram data is acquired using this pattern by modulating the X-ray source during its rotation, the reduction of ionizing radiation to which a patient is exposed would be significant - by an order of magnitude or more, depending on the sparsity of sampling and speed of modulation.
  
  The inversion of the Radon transform for image reconstruction can be achieved using different methods, most notably the Filtered Back-Projection algorithm which relies on a theorem relating the Radon and Fourier transforms (Fourier Slice Theorem).
@@ -91,15 +91,15 @@ I_l = I_0 \, \exp \left( - \int \displaylimits_{(x,y) \in l} \mu(x,y)\, dl \righ
     \mathcal{R}^{3D} f(s, \hat{n}) 
     = \int \displaylimits_{\textbf{r}\, \in H(\hat{n}, s)} f(\textbf{r})\, dA
  \end{equation}
- where $H(\hat{n}, s) = \{ \textbf{r} \in \rm I\!R ^3 : \textbf{r} \cdot \hat{n} = s\}$ and integration is performed within each plane $H(\hat{n}, s)$. For a constant projection direction $\hat{n}$, $\mathcal{R}^{3D} f(s, \hat{n})$ is a one-dimensional signal in $s$, similarly to the two-dimensional Radon transform. As noted by \cite{mooser2013estimation}, the values of $\mathcal{R}^{3D} f(s, \hat{n})$ can be calculated directly from slice sinograms stack of a volume without the need to reconstruct the volume image and carry out planar integration. This is achieved by performing two-dimensional Radon transforms on slices from the $r-z$ plane of the sinograms stack. This relation allows calculating the three-dimensional Radon transform of a fractionally scanned volume without first going through volume reconstruction - which would have been impossible due to the sparsity of the data collected.
+ where $H(\hat{n}, s) = \{ \textbf{r} \in \rm I\!R ^3 : \textbf{r} \cdot \hat{n} = s\}$ is a plane perpendicular to $\hat{n}$ with distance $s$ from the origin, and integration is performed on the plane $H(\hat{n}, s)$. For a constant projection direction $\hat{n}$, $\mathcal{R}^{3D} f(s, \hat{n})$ is a one-dimensional signal in $s$, similarly to the two-dimensional Radon transform. As noted by \cite{mooser2013estimation}, the values of $\mathcal{R}^{3D} f(s, \hat{n})$ can be calculated directly from slice sinograms stack of a volume without the need to reconstruct the volume image and carry out planar integration. This is achieved by performing two-dimensional Radon transforms on slices from the $r-z$ plane of the sinograms stack. This relation allows calculating the three-dimensional Radon transform of a fractionally scanned volume without first going through volume reconstruction - which would have been impossible due to the sparsity of the data collected.
 
 \begin{figure*}[t]
   \centering
   \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/fractional_a.png}
-  \label{fig:fractional_a}}
+  \label{fig:figures/fractional_a}}
   \hfill
   \subfloat[]{\includegraphics[width=0.45\textwidth]{figures/fractional_b.png}
-  \label{fig:fractional_b}}
+  \label{fig:figures/fractional_b}}
   \caption{\small{Radon transforms of two dimensional images (sinograms), representing slices of a volume along the z direction. (a) Full sinograms, densely sampled in the view angle direction. (b) Blue lines on the sinograms highlighting the regions acquired during sparse view angle sampling in fractional scanning.}}
     \label{fig:figures/fractional}
 \end{figure*}
