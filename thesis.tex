@@ -6,6 +6,7 @@
 \usepackage{url}
 \usepackage{wasysym}
 \usepackage{amssymb}
+\usepackage{emptypage}
 
 \include{thesis.preamble}
 
@@ -13,7 +14,6 @@
 \renewcommand{\citedash}{--} 
 
 \begin{document}
-
 \title{\LARGE {\bf Reduced-dose rigid registration in 3D Radon space for repeat CT procedures, and applications in interventional radiology}\\
  \vspace*{6mm}
 }
@@ -28,6 +28,8 @@
 
 \preface
 \supervised
+\cleardoublepage
+\input{acknowledgements/acknowledgements}
 \input{abstract/abstract}
 \input{contributions/contributions}
 
@@ -70,8 +72,6 @@
 \bibliography{thesis.bib}
 
 \cleardoublepage
-
-\input{acknowledgements/acknowledgements}
 \includepdf[pages=last-1]{chapters/hebrew_intro.pdf} % reverse order
 
 \end{document}
